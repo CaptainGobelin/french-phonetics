@@ -21,12 +21,12 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 	for (int i=0;i<ruleSize[1];i++)
 		if (word[pos+i] != rule[i+ruleSize[0]])
 				test = false;
-	for (int i=1;i<=ruleSize[2];i++) {
+	for (int i=0;i<ruleSize[2];i++) {
 		if (rule[i+ruleSize[0]+ruleSize[1]] == '/') {
-			test = test && noVowel(word, pos+i);
+			test = test && noVowel(word, pos+i+ruleSize[1]);
 		}
 		else if (rule[i+ruleSize[0]+ruleSize[1]] == '-') {
-			test = test && isVowel(word, pos+i);
+			test = test && isVowel(word, pos+i+ruleSize[1]);
 		}
 	}
 	if (test)
