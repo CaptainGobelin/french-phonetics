@@ -17,6 +17,9 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 		else if (rule[i] == '-') {
 			test = test && isVowel(word, pos-i);
 		}
+		else if (rule[i] == '|') {
+			test = test && isConsonant(word, pos-i);
+		}
 	}
 	for (int i=0;i<ruleSize[1];i++)
 		if (word[pos+i] != rule[i+ruleSize[0]])
@@ -27,6 +30,12 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 		}
 		else if (rule[i+ruleSize[0]+ruleSize[1]] == '-') {
 			test = test && isVowel(word, pos+i+ruleSize[1]);
+		}
+		else if (rule[i+ruleSize[0]+ruleSize[1]] == '|') {
+			test = test && isConsonant(word, pos+i+ruleSize[1]);
+		}
+		else if (((int)rule[i+ruleSize[0]+ruleSize[1]] > 64) && ((int)rule[i+ruleSize[0]+ruleSize[1]] < 91)) {
+			test = test && checkLetter(word, (int)rule[i+ruleSize[0]+ruleSize[1]], pos+i+ruleSize[1]);
 		}
 	}
 	if (test)
@@ -57,7 +66,7 @@ bool StrUtils::isLetter(char charToTest) {
 }
 
 bool StrUtils::noVowel(std::string word, unsigned int pos) {
-	if (word.size() < pos)
+	if (word.size() <= pos)
 		return true;
 	std::string vowels = "aeiouy";
 	for (int i=0;i<6;i++)
@@ -67,11 +76,27 @@ bool StrUtils::noVowel(std::string word, unsigned int pos) {
 }
 
 bool StrUtils::isVowel(std::string word, unsigned int pos) {
-	if (word.size() < pos)
+	if (word.size() <= pos)
 		return false;
 	std::string vowels = "aeiouy";
 	for (int i=0;i<6;i++)
 		if (word[pos] == vowels[i])
 			return true;
+	return false;
+}
+
+bool StrUtils::isConsonant(std::string word, unsigned int pos) {
+	if (word.size() <= pos)
+		return false;
+	std::string vowels = "aeiouy";
+	for (int i=0;i<6;i++)
+		if (word[pos] == vowels[i])
+			return false;
+	return true;
+}
+
+bool StrUtils::checkLetter(std::string word, int letter, unsigned int pos) {
+	if ((int)word[pos] == (letter+32))
+		return true;
 	return false;
 }

@@ -1,7 +1,15 @@
 #ifndef PHONO_H
 #define PHONO_H
 
-static const std::string phonetics[27][5] = {
+/*
+==========RULES==========
+/ no vowel
+- is vowel
+| is consonant
+A-Z is a-z
+*/
+
+static const std::string phonetics[28][5] = {
 	{"a",	"a",	"",		"",		""},
 	{"eu",	"e",	"eu",	"oe",	""},
 	{"i",	"i",	"y",	"ill",	""},
@@ -10,7 +18,8 @@ static const std::string phonetics[27][5] = {
 	{"in", 	"in/",	"un/",	"ain/",	"ein/"},
 	{"on", 	"on",	"",		"",		""},
 	{"ou", 	"ou",	"",		"",		""},
-	{"ai", 	"ai", 	"", 	"",		""},
+	{"ai", 	"ai", 	"e||", 	"",		""},
+	{"an", 	"an/", 	"en/", 	"",		""},
 	{"b", 	"b",	"",		"",		""},
 	{"k", 	"c",	"k",	"q",	"qu"},
 	{"ch",	"ch",	"sh",	"",		""},
@@ -24,7 +33,7 @@ static const std::string phonetics[27][5] = {
 	{"n", 	"n",	"nn",	"",		""},
 	{"p", 	"p",	"pp",	"",		""},
 	{"r", 	"r",	"rr",	"",		""},
-	{"s", 	"s",	"ss",	"ce",	"sc-"},
+	{"s", 	"s",	"ss",	"tION",	"sc-"},
 	{"t", 	"t",	"tt",	"",		""},
 	{"v", 	"v",	"w",	"",		""},
 	{"x", 	"x",	"",		"",		""},
