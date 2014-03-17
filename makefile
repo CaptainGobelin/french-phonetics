@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall
 LDFLAGS=
 EXEC=phonetics
-OBJ=main.o
+OBJ=main.o strUtils.o
 
 %.o : %.cpp %.h
 	$(CC) -c $*.cpp $(CFLAGS)
