@@ -25,7 +25,6 @@ int main(int argc, char *argv[]) {
 					if (StrUtils::compare(phonetics[i][TRAN+j], toPhon, pos, toCut)) {
 						testSucced = true;
 						phoned += (" " + phonetics[i][PHON]);
-						//toPhon.erase(pos, cut);
 						pos += toCut;
 						break;
 					}
@@ -46,12 +45,5 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	std::cout << "Phonétisation: " << phoned << "." << std::endl;
-	/*int y[3];
-	for (int i=0;i<28;i++)
-		for (int j=0;j<4;j++) {
-			StrUtils::ruleLength(phonetics[i][TRAN+j], y);
-			std::cout << phonetics[i][PHON] << ": " << y[0] << y[1] << y[2]  << std::endl;
-		}*/
-	//std::cout << "ASCII: " << (int)'a'-(int)'A' << std::endl;
 	return 0;
 }
