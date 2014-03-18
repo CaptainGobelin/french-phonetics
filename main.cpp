@@ -16,6 +16,9 @@ int main(int argc, char *argv[]) {
 	std::string phoned = "";
 	std::string toPhon = argv[1];
 	unsigned int pos = 0;
+	/*int y[3];
+	StrUtils::ruleLength("-!As-", y);
+	std::cout << "Test: " << y[0] << y[1] << y[2] << std::endl;*/
 	while (toPhon.size() > pos) {
 		int toCut = std::min(3, (int)(toPhon.size()-pos));
 		bool testSucced = false;

@@ -5,20 +5,21 @@
 ==========RULES==========
 / no vowel
 - is vowel
-| is consonant
+~ is consonant
+< same letter
 A-Z is a-z
 */
 
 static const std::string phonetics[28][5] = {
-	{"a",	"a",	"",		"",		""},
+	{"a",	"a",	"Oi",	"",		""},
 	{"eu",	"e",	"eu",	"oe",	""},
 	{"i",	"i",	"y",	"ill",	""},
 	{"o",	"o",	"au",	"eau",	""},
 	{"u",	"u",	"",		"",		""},
 	{"in", 	"in/",	"un/",	"ain/",	"ein/"},
-	{"on", 	"on",	"",		"",		""},
-	{"ou", 	"ou",	"",		"",		""},
-	{"ai", 	"ai", 	"e||", 	"",		""},
+	{"on", 	"on/",	"",		"",		""},
+	{"ou", 	"ou",	"oI",	"",		""},
+	{"ai", 	"ai", 	"e~<", 	"",		""},
 	{"an", 	"an/", 	"en/", 	"",		""},
 	{"b", 	"b",	"",		"",		""},
 	{"k", 	"c",	"k",	"q",	"qu"},

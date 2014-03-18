@@ -11,19 +11,26 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 		return false;
 	bool test = true;
 	int shift = 0;
-	for (int i=ruleSize[0];i>0;i--) {
+	for (int i=0;i<ruleSize[0];i++) {
+		//if (rule[i] == '!')
+			//shift = 1;
+		//	i--;
 		if (rule[i] == '/') {
-			test = test && noVowel(word, pos-i);
+			test = test && (noVowel(word, pos-ruleSize[0]+i));
 		}
 		else if (rule[i] == '-') {
-			test = test && isVowel(word, pos-i);
+			test = test && (isVowel(word, pos-ruleSize[0]+i));
 		}
-		else if (rule[i] == '|') {
-			test = test && isConsonant(word, pos-i);
+		else if (rule[i] == '~') {
+			test = test && (isConsonant(word, pos-ruleSize[0]+i));
+		}
+		else if (rule[i] == '<') {
+			test = test && (doubleLetter(word, pos-ruleSize[0]+i));
 		}
 		else if (((int)rule[i] > 64) && ((int)rule[i] < 91)) {
-			test = test && checkLetter(word, (int)rule[i], pos-i);
+			test = test && (checkLetter(word, (int)rule[i], pos-ruleSize[0]+i));
 		}
+		//shift = 0;
 	}
 	shift = ruleSize[0];
 	for (int i=0;i<ruleSize[1];i++)
@@ -31,14 +38,20 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 				test = false;
 	shift = ruleSize[0] + ruleSize[1];
 	for (int i=0;i<ruleSize[2];i++) {
+		//if (rule[i+shift] == '!')
+			//shift = 1;
+		//	i++;
 		if (rule[i+shift] == '/') {
 			test = test && noVowel(word, pos+i+ruleSize[1]);
 		}
 		else if (rule[i+shift] == '-') {
 			test = test && isVowel(word, pos+i+ruleSize[1]);
 		}
-		else if (rule[i+shift] == '|') {
+		else if (rule[i+shift] == '~') {
 			test = test && isConsonant(word, pos+i+ruleSize[1]);
+		}
+		else if (rule[i+shift] == '<') {
+			test = test && doubleLetter(word, pos+i+ruleSize[1]);
 		}
 		else if (((int)rule[i+shift] > 64) && ((int)rule[i+shift] < 91)) {
 			test = test && checkLetter(word, (int)rule[i+shift], pos+i+ruleSize[1]);
@@ -53,14 +66,19 @@ void StrUtils::ruleLength(std::string rule, int count[]) {
 	for (int i=0;i<3;i++)
 		count[i] = 0;
 	bool firstRulesPassed = false;
-	for (unsigned int i=0;i<rule.size();i++)
+	for (unsigned int i=0;i<rule.size();i++) {
 		if (isLetter(rule[i])) {
 			count[1]++;
 			firstRulesPassed = true;
 		}
-		else if (!firstRulesPassed)
-			count[0]++;
-	count[2] = rule.size() - count[0] - count[1];
+		else if (!firstRulesPassed) {
+			//if (rule[i] != '!')
+				count[0]++;
+		}
+		//if (rule[i] == '!')
+		//	count[2]--;
+	}
+	count[2] += (rule.size() - count[0] - count[1]);
 }
 
 bool StrUtils::isLetter(char charToTest) {
@@ -102,7 +120,19 @@ bool StrUtils::isConsonant(std::string word, unsigned int pos) {
 }
 
 bool StrUtils::checkLetter(std::string word, int letter, unsigned int pos) {
+	if (word.size() <= pos)
+		return false;
 	if ((int)word[pos] == (letter+32))
+		return true;
+	return false;
+}
+
+bool StrUtils::doubleLetter(std::string word, unsigned int pos) {
+	if (pos == 0)
+		return false;
+	if (word.size() <= pos)
+		return false;
+	if (word[pos] == word[pos-1])
 		return true;
 	return false;
 }

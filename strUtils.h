@@ -16,6 +16,7 @@ class StrUtils {
 		static bool isVowel(std::string word, unsigned int pos);
 		static bool isConsonant(std::string word, unsigned int pos);
 		static bool checkLetter(std::string word, int letter, unsigned int pos);
+		static bool doubleLetter(std::string word, unsigned int pos);
 };
 
 #endif
