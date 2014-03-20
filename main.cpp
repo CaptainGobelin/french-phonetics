@@ -16,15 +16,12 @@ int main(int argc, char *argv[]) {
 	std::string phoned = "";
 	std::string toPhon = argv[1];
 	unsigned int pos = 0;
-	/*int y[3];
-	StrUtils::ruleLength("-!As-", y);
-	std::cout << "Test: " << y[0] << y[1] << y[2] << std::endl;*/
 	while (toPhon.size() > pos) {
-		int toCut = std::min(3, (int)(toPhon.size()-pos));
+		int toCut = std::min(5, (int)(toPhon.size()-pos));
 		bool testSucced = false;
 		while (toCut > 0) {
-			for (int i=0;i<28;i++) {
-				for (int j=0;j<4;j++) {
+			for (int i=0;i<NB_PHON;i++) {
+				for (int j=0;j<NB_TRAN;j++) {
 					if (StrUtils::compare(phonetics[i][TRAN+j], toPhon, pos, toCut)) {
 						testSucced = true;
 						phoned += (" " + phonetics[i][PHON]);

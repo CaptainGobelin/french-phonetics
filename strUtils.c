@@ -11,26 +11,31 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 		return false;
 	bool test = true;
 	int shift = 0;
+	bool negative = false;
 	for (int i=0;i<ruleSize[0];i++) {
-		//if (rule[i] == '!')
-			//shift = 1;
-		//	i--;
+		if (rule[i] == '!') {
+			negative = true;
+			i++;
+		}
 		if (rule[i] == '/') {
-			test = test && (noVowel(word, pos-ruleSize[0]+i));
+			test = test && (noVowel(word, pos-ruleSize[0]+i)!=negative);
 		}
 		else if (rule[i] == '-') {
-			test = test && (isVowel(word, pos-ruleSize[0]+i));
+			test = test && (isVowel(word, pos-ruleSize[0]+i)!=negative);
 		}
 		else if (rule[i] == '~') {
-			test = test && (isConsonant(word, pos-ruleSize[0]+i));
+			test = test && (isConsonant(word, pos-ruleSize[0]+i)!=negative);
 		}
 		else if (rule[i] == '<') {
-			test = test && (doubleLetter(word, pos-ruleSize[0]+i));
+			test = test && (doubleLetter(word, pos-ruleSize[0]+i)!=negative);
+		}
+		else if (rule[i] == '[') {
+			test = test && (endChar(word, pos-ruleSize[0]+i)!=negative);
 		}
 		else if (((int)rule[i] > 64) && ((int)rule[i] < 91)) {
-			test = test && (checkLetter(word, (int)rule[i], pos-ruleSize[0]+i));
+			test = test && (checkLetter(word, (int)rule[i], pos-ruleSize[0]+i)!=negative);
 		}
-		//shift = 0;
+		negative = false;
 	}
 	shift = ruleSize[0];
 	for (int i=0;i<ruleSize[1];i++)
@@ -38,24 +43,29 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 				test = false;
 	shift = ruleSize[0] + ruleSize[1];
 	for (int i=0;i<ruleSize[2];i++) {
-		//if (rule[i+shift] == '!')
-			//shift = 1;
-		//	i++;
+		if (rule[i+shift] == '!') {
+			negative = true;
+			i++;
+		}
 		if (rule[i+shift] == '/') {
-			test = test && noVowel(word, pos+i+ruleSize[1]);
+			test = test && (noVowel(word, pos+i+ruleSize[1])!=negative);
 		}
 		else if (rule[i+shift] == '-') {
-			test = test && isVowel(word, pos+i+ruleSize[1]);
+			test = test && (isVowel(word, pos+i+ruleSize[1])!=negative);
 		}
 		else if (rule[i+shift] == '~') {
-			test = test && isConsonant(word, pos+i+ruleSize[1]);
+			test = test && (isConsonant(word, pos+i+ruleSize[1])!=negative);
 		}
 		else if (rule[i+shift] == '<') {
-			test = test && doubleLetter(word, pos+i+ruleSize[1]);
+			test = test && (doubleLetter(word, pos+i+ruleSize[1])!=negative);
+		}
+		else if (rule[i+shift] == '[') {
+			test = test && (endChar(word, pos+i+ruleSize[1])!=negative);
 		}
 		else if (((int)rule[i+shift] > 64) && ((int)rule[i+shift] < 91)) {
-			test = test && checkLetter(word, (int)rule[i+shift], pos+i+ruleSize[1]);
+			test = test && (checkLetter(word, (int)rule[i+shift], pos+i+ruleSize[1])!=negative);
 		}
+		negative = false;
 	}
 	if (test)
 		len = ruleSize[1];
@@ -72,11 +82,8 @@ void StrUtils::ruleLength(std::string rule, int count[]) {
 			firstRulesPassed = true;
 		}
 		else if (!firstRulesPassed) {
-			//if (rule[i] != '!')
-				count[0]++;
+			count[0]++;
 		}
-		//if (rule[i] == '!')
-		//	count[2]--;
 	}
 	count[2] += (rule.size() - count[0] - count[1]);
 }
@@ -112,11 +119,11 @@ bool StrUtils::isVowel(std::string word, unsigned int pos) {
 bool StrUtils::isConsonant(std::string word, unsigned int pos) {
 	if (word.size() <= pos)
 		return false;
-	std::string vowels = "aeiouy";
-	for (int i=0;i<6;i++)
-		if (word[pos] == vowels[i])
-			return false;
-	return true;
+	std::string consonant = "bcdfghjklmnpqrstvwxz";
+	for (int i=0;i<20;i++)
+		if (word[pos] == consonant[i])
+			return true;
+	return false;
 }
 
 bool StrUtils::checkLetter(std::string word, int letter, unsigned int pos) {
@@ -133,6 +140,14 @@ bool StrUtils::doubleLetter(std::string word, unsigned int pos) {
 	if (word.size() <= pos)
 		return false;
 	if (word[pos] == word[pos-1])
+		return true;
+	return false;
+}
+
+bool StrUtils::endChar(std::string word, unsigned int pos) {
+	if (pos >= word.size())
+		return true;
+	if (!isLetter(word[pos]))
 		return true;
 	return false;
 }

@@ -30,6 +30,5 @@
 
 #define PHON 0
 #define TRAN 1
-#define NB_TRAN 4
 
 #endif
