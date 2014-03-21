@@ -11,7 +11,7 @@ class StrUtils {
 	public:
 		static bool compare(std::string rule, std::string word, unsigned int pos, int &len);
 		static void ruleLength(std::string rule, int count[]);
-		static bool isLetter(char charToTest);
+		static bool isLetter(std::string word, unsigned int pos);
 		static bool noVowel(std::string word, unsigned int pos);
 		static bool isVowel(std::string word, unsigned int pos);
 		static bool isConsonant(std::string word, unsigned int pos);

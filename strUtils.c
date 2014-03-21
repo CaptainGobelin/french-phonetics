@@ -32,6 +32,9 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 		else if (rule[i] == '[') {
 			test = test && (endChar(word, pos-ruleSize[0]+i)!=negative);
 		}
+		else if (rule[i] == '*') {
+			test = test && (isLetter(word, pos-ruleSize[0]+i)!=negative);
+		}
 		else if (((int)rule[i] > 64) && ((int)rule[i] < 91)) {
 			test = test && (checkLetter(word, (int)rule[i], pos-ruleSize[0]+i)!=negative);
 		}
@@ -62,6 +65,9 @@ bool StrUtils::compare(std::string rule, std::string word, unsigned int pos, int
 		else if (rule[i+shift] == '[') {
 			test = test && (endChar(word, pos+i+ruleSize[1])!=negative);
 		}
+		else if (rule[i+shift] == '*') {
+			test = test && (isLetter(word, pos+i+ruleSize[1])!=negative);
+		}
 		else if (((int)rule[i+shift] > 64) && ((int)rule[i+shift] < 91)) {
 			test = test && (checkLetter(word, (int)rule[i+shift], pos+i+ruleSize[1])!=negative);
 		}
@@ -77,7 +83,7 @@ void StrUtils::ruleLength(std::string rule, int count[]) {
 		count[i] = 0;
 	bool firstRulesPassed = false;
 	for (unsigned int i=0;i<rule.size();i++) {
-		if (isLetter(rule[i])) {
+		if (isLetter(rule, i)) {
 			count[1]++;
 			firstRulesPassed = true;
 		}
@@ -88,10 +94,10 @@ void StrUtils::ruleLength(std::string rule, int count[]) {
 	count[2] += (rule.size() - count[0] - count[1]);
 }
 
-bool StrUtils::isLetter(char charToTest) {
+bool StrUtils::isLetter(std::string word, unsigned int pos) {
 	std::string letters = "abcdefghijklmnopqrstuvwxyz";
 	for (int i=0;i<26;i++)
-		if (charToTest == letters[i])
+		if (word[pos] == letters[i])
 			return true;
 	return false;
 }
@@ -147,7 +153,7 @@ bool StrUtils::doubleLetter(std::string word, unsigned int pos) {
 bool StrUtils::endChar(std::string word, unsigned int pos) {
 	if (pos >= word.size())
 		return true;
-	if (!isLetter(word[pos]))
+	if (!isLetter(word, pos))
 		return true;
 	return false;
 }
